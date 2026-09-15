@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TourApp Mobile Prototype</title>
+    <meta name="theme-color" content="#0c4f5c" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="phone-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Travel Console</p>
+          <h1>新加坡旅行</h1>
+          <p class="subtle">Singapore Trip / 新加坡 9.25-9.30</p>
+        </div>
+        <button class="icon-button" aria-label="查看设置">⚙</button>
+      </header>
+
+      <nav class="bottom-tabs" aria-label="主导航">
+        <button class="active" data-tab-target="home">主页</button>
+        <button data-tab-target="route">路线</button>
+        <button data-tab-target="packing">物品</button>
+        <button data-tab-target="weather">天气</button>
+        <button data-tab-target="todo">待办</button>
+      </nav>
+
+      <section class="app-view home-view is-active" data-view="home">
+        <section class="dashboard-card key-info-card">
+          <div class="key-info-grid">
+            <article class="key-info-tile">
+              <span>去程航班</span>
+              <strong>CZ353</strong>
+              <p>9/25 08:35 广州 -> 12:30 新加坡</p>
+            </article>
+            <article class="key-info-tile">
+              <span>返程航班</span>
+              <strong>CZ354</strong>
+              <p>9/30 13:45 新加坡 -> 17:50 广州</p>
+            </article>
+            <article class="key-info-tile wide">
+              <span>酒店</span>
+              <strong>Grand Mercure Roxy -> Frasers House</strong>
+              <p>9/25-9/29 罗克西美爵；9/29-9/30 Frasers House。</p>
+            </article>
+          </div>
+        </section>
+
+        <article class="contact-panel dashboard-card" id="contact-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Contacts / 联系人</p>
+              <h2>联系人信息</h2>
+            </div>
+          </div>
+          <form class="contact-form" id="contact-form">
+            <label class="sr-only" for="contact-initials">英文姓名缩写</label>
+            <input id="contact-initials" type="text" placeholder="姓名缩写" maxlength="12" />
+            <label class="sr-only" for="contact-phone">当地电话</label>
+            <input id="contact-phone" type="tel" placeholder="当地电话" maxlength="22" />
+            <label class="sr-only" for="contact-passport">护照号</label>
+            <input id="contact-passport" type="text" placeholder="护照号" maxlength="18" />
+            <button class="contact-add-button" type="submit" aria-label="添加联系人">+</button>
+          </form>
+          <div class="contact-list" id="contact-list" aria-live="polite"></div>
+        </article>
+
+        <section class="home-itinerary-card">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Today Plan / 当日行程</p>
+              <h2 id="home-plan-title">当日行程</h2>
+            </div>
+            <span class="home-day-badge" id="home-plan-badge">9/25 周五</span>
+          </div>
+          <div class="home-route-card" id="home-route-card" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="app-view route-view" data-view="route" hidden>
+        <nav class="day-tabs" aria-label="路线日期切换">
+          <button class="active" data-route-day="0925">9/25</button>
+          <button data-route-day="0926">9/26</button>
+          <button data-route-day="0927">9/27</button>
+          <button data-route-day="0928">9/28</button>
+          <button data-route-day="0929">9/29</button>
+          <button data-route-day="0930">9/30</button>
+        </nav>
+
+      <section class="route-section">
+        <div class="section-heading">
+          <p class="eyebrow">Route / 路线</p>
+          <h2>每日路线</h2>
+        </div>
+
+        <article class="day-card route-planner" data-route-day="0925">
+          <div class="route-cover">
+            <div class="photo-carousel" aria-label="9月25日景点图片">
+              <figure class="photo-slide">
+                <img src="https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1600900gsm/eventThirdParty/2025/11/08/d0ed8eb4-324f-4da4-8feb-c7bd72e5fac1-1762541486847-e4267aebcd6f29deaa9060a33d5813a6.jpg" alt="iFly Singapore" />
+                <figcaption>iFly Singapore / 新加坡风洞飞行</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://thumb.tidesquare.com/tour/public/product/PRV3000078320/PRD3000444322/origin/a9723849-8c87-4109-9f32-2f6353c5060a.png?type=wide" alt="Skyline Luge Singapore" />
+                <figcaption>Skyline Luge / 新加坡天际滑车</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://www.sentosa.com.sg/-/media/sentosa/hero-asset/attractions/wings-of-time/image--wings-of-time-finale-fireworks.jpg?w=1728" alt="Wings of Time" />
+                <figcaption>Wings of Time / 时光之翼</figcaption>
+              </figure>
+            </div>
+            <div class="route-cover-text">
+              <span class="date-badge">9/25 周五</span>
+              <h3>抵达 + 圣淘沙日落</h3>
+              <p>iFly -> Skyline Luge -> Wings of Time</p>
+            </div>
+            <div class="carousel-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <ol class="journey-list">
+            <li>
+              <time>12:30</time>
+              <div>
+                <strong>CZ353 抵达 / Arrive at SIN</strong>
+                <p>入境后直接去酒店放行李，别在机场停太久。</p>
+              </div>
+            </li>
+            <li>
+              <time>16:30</time>
+              <div>
+                <strong>前往圣淘沙 / To Sentosa</strong>
+                <p>赶预约和日落，这段建议打车到 Beach Station。</p>
+              </div>
+            </li>
+            <li>
+              <time>18:00</time>
+              <div>
+                <strong>iFly Singapore / 新加坡风洞飞行</strong>
+                <p>需要提前 check-in，若延误就挪到 9/29。</p>
+              </div>
+            </li>
+            <li>
+              <time>18:50</time>
+              <div>
+                <strong>Skyline Luge / 新加坡天际滑车</strong>
+                <p>把 Skyride 缆车留给日落时段。</p>
+              </div>
+            </li>
+            <li>
+              <time>20:40</time>
+              <div>
+                <strong>Wings of Time / 时光之翼</strong>
+                <p>看完后逛 Sentosa Sensoryscape / 圣淘沙感官小径。</p>
+              </div>
+            </li>
+          </ol>
+          <div class="custom-grid">
+            <div class="custom-tile">
+              <span>携带物品</span>
+              <p>护照、充电宝、防晒霜、轻便包、相机或手机稳定器。</p>
+            </div>
+            <div class="custom-tile warning">
+              <span>备注</span>
+              <p>优先级：天际滑车日落 > 圣淘沙夜景 > iFly。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="day-card route-planner" data-route-day="0926">
+          <div class="route-cover">
+            <div class="photo-carousel" aria-label="9月26日景点图片">
+              <figure class="photo-slide">
+                <img src="https://cassette.sphdigital.com.sg/image/thepeak/4703d2ca016269ab5898f04772457175a86b6bd1e0325af044197ab8c870ec11" alt="Raffles Hotel Singapore" />
+                <figcaption>Raffles Hotel / 莱佛士酒店</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://wonderwall.sg/images/default-source/content/dam/wonderwall/images/2024/02/national-monuments-of-singapore-former-convent-of-the-holy-infant-jesus-chapel-and-caldwell-house/national_monuments_chijmes_lead.jpg" alt="CHIJMES Singapore" />
+                <figcaption>CHIJMES / 赞美广场</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://static.wixstatic.com/media/60409b_e18d209037c8480e95f1c6b7d1f0cca8~mv2.jpg/v1/fill/w_980%2Ch_735%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/60409b_e18d209037c8480e95f1c6b7d1f0cca8~mv2.jpg" alt="Merlion Park" />
+                <figcaption>Merlion Park / 鱼尾狮公园</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://cdn-imgix.headout.com/media/images/35e1683b0bca689c39ac1aaf25276147-Gardens%20by%20the%20Bay%20Light%20Show%20-%20An%20Evening%20of%20Musical%20Theatre.jpg?auto=compress%2Cformat&amp;crop=faces&amp;fit=crop&amp;q=90" alt="Gardens by the Bay" />
+                <figcaption>Gardens by the Bay / 滨海湾花园</figcaption>
+              </figure>
+            </div>
+            <div class="route-cover-text">
+              <span class="date-badge">9/26 周六</span>
+              <h3>殖民建筑 + 滨海湾夜景</h3>
+              <p>Civic District -> Merlion Park -> Gardens by the Bay</p>
+            </div>
+            <div class="carousel-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <ol class="journey-list">
+            <li>
+              <time>09:30</time>
+              <div>
+                <strong>Civic District / 市政区</strong>
+                <p>莱佛士酒店、赞美广场、圣安德烈座堂，适合干净建筑照。</p>
+              </div>
+            </li>
+            <li>
+              <time>13:30</time>
+              <div>
+                <strong>National Gallery / 新加坡国家美术馆</strong>
+                <p>室内降温，也能拍旧市政厅和最高法院建筑。</p>
+              </div>
+            </li>
+            <li>
+              <time>17:30</time>
+              <div>
+                <strong>Merlion Park / 鱼尾狮公园</strong>
+                <p>傍晚拍 Marina Bay Sands / 滨海湾金沙天际线。</p>
+              </div>
+            </li>
+            <li>
+              <time>19:45</time>
+              <div>
+                <strong>Garden Rhapsody / 花园狂想曲</strong>
+                <p>接 Gardens by the Bay Mid-Autumn Festival / 中秋节庆典。</p>
+              </div>
+            </li>
+          </ol>
+          <div class="custom-grid">
+            <div class="custom-tile">
+              <span>拍照清单</span>
+              <p>广角镜头、墨镜、轻薄外套、补妆用品、备用电量。</p>
+            </div>
+            <div class="custom-tile warning">
+              <span>备注</span>
+              <p>这天照片最多，午后安排室内点，避免一直暴晒。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="day-card route-planner" data-route-day="0927">
+          <div class="route-cover">
+            <div class="photo-carousel" aria-label="9月27日景点图片">
+              <figure class="photo-slide">
+                <img src="https://r-xx.bstatic.com/xdata/images/xphoto/800x800/635935336.jpg?k=abf5fddca69a60d21efd2d180b0cb6a6048aafee9d69ac124123299593f7ad3c&amp;o=" alt="Universal Studios Singapore" />
+                <figcaption>Universal Studios Singapore / 新加坡环球影城</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://static.mothership.sg/1/2023/09/VivoCity_Watering-Can-House_1.jpg" alt="VivoCity Sanrio Characters Moonlit Garden" />
+                <figcaption>VivoCity Sanrio / 怡丰城 Sanrio 月漫花园</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://cassette.sphdigital.com.sg/image/businesstimes/333de3923078de5181c06b262110b08ab74e1b5928735cbdf583bfeb2bcb245c" alt="VivoCity Singapore" />
+                <figcaption>VivoCity / 怡丰城</figcaption>
+              </figure>
+            </div>
+            <div class="route-cover-text">
+              <span class="date-badge">9/27 周日</span>
+              <h3>环球影城整日</h3>
+              <p>USS -> VivoCity Sanrio Moonlit Garden</p>
+            </div>
+            <div class="carousel-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <ol class="journey-list">
+            <li>
+              <time>09:20</time>
+              <div>
+                <strong>到达门口 / Arrive at USS</strong>
+                <p>先拍环球球，开园后直接进热门项目队列。</p>
+              </div>
+            </li>
+            <li>
+              <time>10:00</time>
+              <div>
+                <strong>热门项目优先 / Rides First</strong>
+                <p>上午集中处理排队压力，午后再拍照和看室内项目。</p>
+              </div>
+            </li>
+            <li>
+              <time>18:30</time>
+              <div>
+                <strong>VivoCity / 怡丰城</strong>
+                <p>Sanrio Characters Moonlit Garden / Sanrio 月漫花园，吃饭后撤退。</p>
+              </div>
+            </li>
+          </ol>
+          <div class="custom-grid">
+            <div class="custom-tile">
+              <span>游园装备</span>
+              <p>轻便包、雨衣、防晒霜、水、门票二维码、少量现金。</p>
+            </div>
+            <div class="custom-tile warning">
+              <span>备注</span>
+              <p>按周末人流准备。WaterWorld / 未来水世界维护中。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="day-card route-planner" data-route-day="0928">
+          <div class="route-cover">
+            <div class="photo-carousel" aria-label="9月28日景点图片">
+              <figure class="photo-slide">
+                <img src="https://www.rwsentosa.com/-/jssmedia/project/non-gaming/rwsentosa/attractions/adventure-cove-waterpark/rides/adventure-cove-waterpark-riptide-rocket-1440x760.jpg?mw=8751" alt="Adventure Cove Waterpark" />
+                <figcaption>Adventure Cove / 水上探险乐园</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://www.rwsentosa.com/-/jssmedia/project/non-gaming/rwsentosa/attractions/singapore-oceanarium/gallery/singapore-oceanarium-ocean-wonders-1440x760.jpg?mw=8751" alt="Singapore Oceanarium" />
+                <figcaption>Singapore Oceanarium / 新加坡海洋生态馆</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://images.unsplash.com/photo-1763621470208-efe14b618119?fm=jpg&amp;ixlib=rb-4.1.0&amp;q=60&amp;w=1200" alt="Lau Pa Sat Satay Street" />
+                <figcaption>Lau Pa Sat / 老巴刹沙爹街</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://www.marinabaysands.com/content/dam/marinabaysands/attractions/spectra/spectra-gallery-1920x1080.jpg" alt="Spectra Light and Water Show" />
+                <figcaption>Spectra / 滨海湾金沙光影水舞秀</figcaption>
+              </figure>
+            </div>
+            <div class="route-cover-text">
+              <span class="date-badge">9/28 周一</span>
+              <h3>水上探险 + 金沙夜景</h3>
+              <p>Adventure Cove -> Lau Pa Sat -> Spectra</p>
+            </div>
+            <div class="carousel-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <ol class="journey-list">
+            <li>
+              <time>10:00</time>
+              <div>
+                <strong>Adventure Cove / 水上探险乐园</strong>
+                <p>尽量开园入场，热门滑道先玩。</p>
+              </div>
+            </li>
+            <li>
+              <time>16:30</time>
+              <div>
+                <strong>返回市区 / Back to City</strong>
+                <p>换衣、补水，留出从圣淘沙到 CBD 的移动时间。</p>
+              </div>
+            </li>
+            <li>
+              <time>19:00</time>
+              <div>
+                <strong>Lau Pa Sat / 老巴刹沙爹街</strong>
+                <p>晚餐吃沙爹，之后步行到滨海湾。</p>
+              </div>
+            </li>
+            <li>
+              <time>21:00</time>
+              <div>
+                <strong>Spectra / 滨海湾金沙光影水舞秀</strong>
+                <p>用夜景结束水上乐园日。</p>
+              </div>
+            </li>
+          </ol>
+          <div class="custom-grid">
+            <div class="custom-tile">
+              <span>携带物品</span>
+              <p>泳衣、游泳鞋、防晒霜、手机防水袋、小背包。</p>
+            </div>
+            <div class="custom-tile warning">
+              <span>备注</span>
+              <p>遇雷暴改去 Singapore Oceanarium / 新加坡海洋生态馆。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="day-card route-planner" data-route-day="0929">
+          <div class="route-cover">
+            <div class="photo-carousel" aria-label="9月29日景点图片">
+              <figure class="photo-slide">
+                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aviewoforchardroad.jpg" alt="Orchard Road Singapore" />
+                <figcaption>Orchard Road / 乌节路</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://cdn.getyourguide.com/image/format%3Dauto%2Cfit%3Dcrop%2Cgravity%3Dauto%2Cquality%3D60%2Cwidth%3D800%2Cheight%3D530%2Cdpr%3D2/tour_img/e91e7b016c7bdbb9.jpeg" alt="Kampong Gelam" />
+                <figcaption>Kampong Gelam / 甘榜格南</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Haji%20Lane%2C%20Kampong%20Glam%20%2802%29.jpg" alt="Haji Lane Singapore" />
+                <figcaption>Haji Lane / 哈芝巷</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sultan%20Mosque%20Singapore.jpg" alt="Sultan Mosque Singapore" />
+                <figcaption>Sultan Mosque / 苏丹回教堂</figcaption>
+              </figure>
+            </div>
+            <div class="route-cover-text">
+              <span class="date-badge">9/29 周二</span>
+              <h3>换酒店 + 自由购物</h3>
+              <p>Frasers House -> Orchard / Bugis -> Kampong Gelam</p>
+            </div>
+            <div class="carousel-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <ol class="journey-list">
+            <li>
+              <time>10:30</time>
+              <div>
+                <strong>换酒店 / Hotel Transfer</strong>
+                <p>Roxy 退房后打车去 Frasers House 寄存行李。</p>
+              </div>
+            </li>
+            <li>
+              <time>13:00</time>
+              <div>
+                <strong>自由逛街 / Flexible Shopping</strong>
+                <p>Orchard Road / 乌节路 或 Bugis Junction / 武吉士广场二选一。</p>
+              </div>
+            </li>
+            <li>
+              <time>19:00</time>
+              <div>
+                <strong>Kampong Gelam / 甘榜格南</strong>
+                <p>步行逛 Haji Lane / 哈芝巷、Sultan Mosque / 苏丹回教堂。</p>
+              </div>
+            </li>
+          </ol>
+          <div class="custom-grid">
+            <div class="custom-tile">
+              <span>自由选项</span>
+              <p>乌节路购物、Bugis 逛街、补 iFly、咖啡馆休息。</p>
+            </div>
+            <div class="custom-tile warning">
+              <span>备注</span>
+              <p>如果 9/25 没赶上 iFly，可以补到这天下午。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="day-card route-planner" data-route-day="0930">
+          <div class="route-cover">
+            <div class="photo-carousel" aria-label="9月30日景点图片">
+              <figure class="photo-slide">
+                <img src="https://www.jewelchangiairport.com/content/dam/jca-project/jewelchangiairport/homepage/hsvc/Hero_RainVortex_D_2880x1280.jpg" alt="Jewel Changi Airport Rain Vortex" />
+                <figcaption>Rain Vortex / 星耀樟宜雨漩涡</figcaption>
+              </figure>
+              <figure class="photo-slide">
+                <img src="https://www.jewelchangiairport.com/content/dam/jca-project/jewelchangiairport/attractions/canopy-park/Canopy-Park-Banner.jpg" alt="Canopy Park Jewel Changi" />
+                <figcaption>Canopy Park / 星空花园</figcaption>
+              </figure>
+            </div>
+            <div class="route-cover-text">
+              <span class="date-badge">9/30 周三</span>
+              <h3>星耀樟宜半日</h3>
+              <p>Jewel Changi -> CZ354</p>
+            </div>
+            <div class="carousel-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <ol class="journey-list">
+            <li>
+              <time>08:45</time>
+              <div>
+                <strong>前往机场 / To Airport</strong>
+                <p>从 Frasers House 打车去 Changi / 樟宜机场。</p>
+              </div>
+            </li>
+            <li>
+              <time>10:00</time>
+              <div>
+                <strong>Jewel Changi / 星耀樟宜</strong>
+                <p>Rain Vortex / 雨漩涡、Canopy Park、午餐。</p>
+              </div>
+            </li>
+            <li>
+              <time>12:10</time>
+              <div>
+                <strong>进安检 / Security</strong>
+                <p>CZ354 13:45 起飞，别把机场日排满。</p>
+              </div>
+            </li>
+          </ol>
+          <div class="custom-grid">
+            <div class="custom-tile">
+              <span>机场流程</span>
+              <p>退税、值机托运、雨漩涡、午餐、T1 安检。</p>
+            </div>
+            <div class="custom-tile warning">
+              <span>备注</span>
+              <p>返程日只保留 Jewel 半日，给退税、托运、安检留缓冲。</p>
+            </div>
+          </div>
+        </article>
+      </section>
+      </section>
+
+      <section class="app-view packing-view" data-view="packing" hidden>
+        <article class="packing-panel dashboard-card" id="packing-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Packing / 物品</p>
+              <h2>物品清单</h2>
+            </div>
+            <button class="ghost-button" type="button" id="packing-reset">恢复默认</button>
+          </div>
+          <form class="packing-form" id="packing-form">
+            <label class="sr-only" for="packing-input">新增物品</label>
+            <input id="packing-input" type="text" placeholder="新增物品，例如：泳衣" maxlength="30" />
+            <button class="packing-add-button" type="submit" aria-label="添加物品">+</button>
+          </form>
+          <div class="packing-list" id="packing-list" aria-live="polite"></div>
+        </article>
+      </section>
+
+      <section class="app-view weather-view" data-view="weather" hidden>
+        <section class="dashboard-card hourly-weather-card">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Weather / 天气</p>
+              <h2>未来 6 小时</h2>
+            </div>
+            <button class="icon-button small" type="button" id="weather-refresh" aria-label="刷新天气">↻</button>
+          </div>
+          <div class="hourly-weather-strip" id="hourly-weather-strip" aria-live="polite">
+            <div class="hourly-weather-skeleton">正在更新天气...</div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-view todo-view" data-view="todo" hidden>
+        <article class="todo-panel dashboard-card" id="todo-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Todo / 待办</p>
+              <h2>待办任务</h2>
+            </div>
+          </div>
+          <form class="todo-form" id="todo-form">
+            <label class="sr-only" for="todo-input">新增待办</label>
+            <input id="todo-input" type="text" placeholder="新增待办，例如：预约 iFly" maxlength="36" />
+            <button class="todo-add-button" type="submit" aria-label="添加待办">+</button>
+          </form>
+          <div class="todo-list" id="todo-list" aria-live="polite"></div>
+        </article>
+      </section>
+
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
