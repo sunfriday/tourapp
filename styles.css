@@ -1125,11 +1125,12 @@ figcaption {
 }
 
 .contact-sheet .contact-form {
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(44px, 0.48fr) minmax(112px, 1.42fr) minmax(108px, 1.32fr);
   margin-bottom: 0;
 }
 
 .contact-sheet .contact-submit-button {
+  grid-column: 1 / -1;
   width: 100%;
   font-size: 15px;
 }
@@ -1253,10 +1254,13 @@ figcaption {
     justify-self: start;
   }
 
-  .contact-form,
   .contact-values,
   .contact-edit-form {
     grid-template-columns: 1fr;
+  }
+
+  .contact-form {
+    grid-template-columns: minmax(42px, 0.5fr) minmax(112px, 1.45fr) minmax(108px, 1.35fr);
   }
 
   .contact-item {

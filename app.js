@@ -583,10 +583,12 @@ const openContactSheet = (contact = null) => {
   openContactActionsId = null;
   fillContactForm(contact);
   if (contactSheetTitle) contactSheetTitle.textContent = contact ? "修改联系人" : "新增联系人";
-  if (contactSheet) contactSheet.hidden = false;
-  contactInputs.initials?.focus();
-  contactInputs.initials?.select();
   renderContactList();
+  if (contactSheet) contactSheet.hidden = false;
+  window.requestAnimationFrame(() => {
+    contactInputs.initials?.focus({ preventScroll: true });
+    contactInputs.initials?.select();
+  });
 };
 
 const closeContactSheet = () => {
@@ -645,8 +647,10 @@ const renderContactList = () => {
     editButton.textContent = "✎";
     editButton.title = "编辑";
     editButton.setAttribute("aria-label", "编辑联系人");
-    editButton.addEventListener("click", () => {
-      openContactSheet(contact);
+    editButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const latestContact = contacts.find((candidate) => candidate.id === contact.id);
+      if (latestContact) openContactSheet(latestContact);
     });
 
     const deleteButton = document.createElement("button");
@@ -655,8 +659,12 @@ const renderContactList = () => {
     deleteButton.textContent = "×";
     deleteButton.title = "删除";
     deleteButton.setAttribute("aria-label", "删除联系人");
-    deleteButton.addEventListener("click", () => {
+    deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const displayName = contact.initials || contact.phone || contact.passport || "这个联系人";
+      if (!window.confirm(`确认删除 ${displayName} 吗？`)) return;
       contacts = contacts.filter((candidate) => candidate.id !== contact.id);
+      openContactActionsId = null;
       saveContacts();
       renderContactList();
     });
