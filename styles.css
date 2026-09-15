@@ -962,28 +962,49 @@ figcaption {
   transition: transform 180ms ease;
 }
 
-.contact-values span,
-.contact-value-input {
+.contact-value-cell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 26px;
+  align-items: center;
+  gap: 4px;
   min-width: 0;
   overflow: hidden;
   padding: 7px 8px;
-  border: 0;
   border-radius: 8px;
   background: #ffffff;
   color: #3e5156;
   font-size: 12px;
   font-weight: 780;
   line-height: 1.25;
+}
+
+.contact-value-cell:first-child {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.contact-value-text {
+  min-width: 0;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  -webkit-touch-callout: default;
   -webkit-user-select: text;
   user-select: text;
 }
 
-.contact-value-input {
-  width: 100%;
-  appearance: none;
-  cursor: text;
+.contact-copy-button {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 7px;
+  background: #edf4f1;
+  color: var(--sea);
+  font-size: 13px;
+  line-height: 1;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .contact-actions {
@@ -1092,8 +1113,19 @@ figcaption {
   font-size: 18px;
 }
 
-.contact-value-input:focus {
-  outline: 2px solid rgba(44, 156, 123, 0.24);
+.contact-list[data-message]::after {
+  content: attr(data-message);
+  position: fixed;
+  right: 18px;
+  bottom: 22px;
+  z-index: 40;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(24, 48, 54, 0.92);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 760;
+  box-shadow: 0 12px 28px rgba(24, 48, 54, 0.22);
 }
 
 .packing-edit-form,

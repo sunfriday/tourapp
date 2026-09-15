@@ -601,20 +601,47 @@ const closeContactSheet = () => {
 const runContactAction = (event, action) => {
   event.preventDefault();
   event.stopPropagation();
+  if (Date.now() - lastContactActionAt < 320) return;
   lastContactActionAt = Date.now();
   action();
 };
 
 const bindContactAction = (button, action) => {
-  button.addEventListener("pointerup", (event) => runContactAction(event, action));
+  button.addEventListener("touchend", (event) => runContactAction(event, action), { passive: false });
+  button.addEventListener("pointerup", (event) => {
+    if (event.pointerType !== "touch") runContactAction(event, action);
+  });
   button.addEventListener("click", (event) => {
-    if (Date.now() - lastContactActionAt < 350) {
-      event.preventDefault();
-      event.stopPropagation();
-      return;
-    }
     runContactAction(event, action);
   });
+};
+
+const flashContactMessage = (message) => {
+  if (!contactListEl) return;
+  contactListEl.dataset.message = message;
+  window.setTimeout(() => {
+    if (contactListEl.dataset.message === message) delete contactListEl.dataset.message;
+  }, 1200);
+};
+
+const copyContactValue = async (text) => {
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    flashContactMessage("已复制");
+    return;
+  } catch {
+    const helper = document.createElement("textarea");
+    helper.value = text;
+    helper.setAttribute("readonly", "");
+    helper.style.position = "fixed";
+    helper.style.left = "-9999px";
+    document.body.append(helper);
+    helper.select();
+    const copied = document.execCommand("copy");
+    helper.remove();
+    flashContactMessage(copied ? "已复制" : "请长按复制");
+  }
 };
 
 const renderContactList = () => {
@@ -637,10 +664,29 @@ const renderContactList = () => {
 
     const values = document.createElement("div");
     values.className = "contact-values";
+    values.addEventListener("touchstart", (event) => {
+      values.dataset.startX = String(event.touches[0]?.clientX ?? 0);
+    }, { passive: true });
+    values.addEventListener("touchend", (event) => {
+      const startX = Number(values.dataset.startX);
+      if (!Number.isFinite(startX)) return;
+      const deltaX = (event.changedTouches[0]?.clientX ?? startX) - startX;
+      if (Math.abs(deltaX) < 36) return;
+      if (deltaX < 0) {
+        if (openContactActionsId === contact.id) return;
+        openContactActionsId = contact.id;
+      } else {
+        if (!openContactActionsId) return;
+        openContactActionsId = null;
+      }
+      renderContactList();
+    }, { passive: true });
     values.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch") return;
       values.dataset.startX = String(event.clientX);
     });
     values.addEventListener("pointerup", (event) => {
+      if (event.pointerType === "touch") return;
       const startX = Number(values.dataset.startX);
       if (!Number.isFinite(startX)) return;
       const deltaX = event.clientX - startX;
@@ -656,16 +702,26 @@ const renderContactList = () => {
     });
 
     CONTACT_FIELDS.forEach((field) => {
-      const value = document.createElement("input");
-      value.className = "contact-value-input";
-      value.readOnly = true;
-      value.value = contact[field] || "";
-      value.placeholder = "-";
-      value.setAttribute("aria-label", field);
-      value.addEventListener("focus", () => {
-        if (value.value) value.select();
-      });
-      values.append(value);
+      const cell = document.createElement("div");
+      cell.className = "contact-value-cell";
+
+      const value = document.createElement("span");
+      value.className = "contact-value-text";
+      value.textContent = contact[field] || "-";
+      cell.append(value);
+
+      if (field !== "initials" && contact[field]) {
+        const copyButton = document.createElement("button");
+        copyButton.type = "button";
+        copyButton.className = "contact-copy-button";
+        copyButton.textContent = "⧉";
+        copyButton.title = "复制";
+        copyButton.setAttribute("aria-label", "复制");
+        bindContactAction(copyButton, () => copyContactValue(contact[field]));
+        cell.append(copyButton);
+      }
+
+      values.append(cell);
     });
 
     const actions = document.createElement("div");
