@@ -55,18 +55,31 @@
               <p class="eyebrow">Contacts / 联系人</p>
               <h2>联系人信息</h2>
             </div>
+            <button class="contact-add-trigger icon-button small" type="button" id="contact-add-trigger" aria-label="添加联系人">+</button>
           </div>
-          <form class="contact-form" id="contact-form">
-            <label class="sr-only" for="contact-initials">英文姓名缩写</label>
-            <input id="contact-initials" type="text" placeholder="姓名缩写" maxlength="12" />
-            <label class="sr-only" for="contact-phone">当地电话</label>
-            <input id="contact-phone" type="tel" placeholder="当地电话" maxlength="22" />
-            <label class="sr-only" for="contact-passport">护照号</label>
-            <input id="contact-passport" type="text" placeholder="护照号" maxlength="18" />
-            <button class="contact-add-button" type="submit" aria-label="添加联系人">+</button>
-          </form>
           <div class="contact-list" id="contact-list" aria-live="polite"></div>
         </article>
+
+        <div class="contact-sheet" id="contact-sheet" hidden>
+          <div class="contact-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="contact-sheet-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Contact / 联系人</p>
+                <h2 id="contact-sheet-title">新增联系人</h2>
+              </div>
+              <button class="contact-sheet-close icon-button small" type="button" id="contact-sheet-close" aria-label="关闭">×</button>
+            </div>
+            <form class="contact-form" id="contact-form">
+              <label class="sr-only" for="contact-initials">英文姓名缩写</label>
+              <input id="contact-initials" type="text" placeholder="姓名缩写" maxlength="12" />
+              <label class="sr-only" for="contact-phone">当地电话</label>
+              <input id="contact-phone" type="tel" placeholder="当地电话" maxlength="22" />
+              <label class="sr-only" for="contact-passport">护照号</label>
+              <input id="contact-passport" type="text" placeholder="护照号" maxlength="18" />
+              <button class="contact-submit-button" type="submit">保存</button>
+            </form>
+          </div>
+        </div>
 
         <section class="home-itinerary-card">
           <div class="panel-heading">

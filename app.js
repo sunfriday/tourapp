@@ -520,14 +520,13 @@ const createItemId = () => {
 
 const CONTACT_STORAGE_KEY = "tourapp.contacts.v1";
 const CONTACT_FIELDS = ["initials", "phone", "passport"];
-const CONTACT_PLACEHOLDERS = {
-  initials: "姓名缩写",
-  phone: "当地电话",
-  passport: "护照号",
-};
 
 const contactListEl = document.querySelector("#contact-list");
 const contactForm = document.querySelector("#contact-form");
+const contactAddTrigger = document.querySelector("#contact-add-trigger");
+const contactSheet = document.querySelector("#contact-sheet");
+const contactSheetTitle = document.querySelector("#contact-sheet-title");
+const contactSheetClose = document.querySelector("#contact-sheet-close");
 const contactInputs = {
   initials: document.querySelector("#contact-initials"),
   phone: document.querySelector("#contact-phone"),
@@ -546,6 +545,7 @@ const readContacts = () => {
 
 let contacts = readContacts();
 let editingContactId = null;
+let openContactActionsId = null;
 
 const saveContacts = () => {
   try {
@@ -569,13 +569,27 @@ const clearContactForm = () => {
   });
 };
 
-const createContactInput = (field, value = "") => {
-  const input = document.createElement("input");
-  input.type = field === "phone" ? "tel" : "text";
-  input.value = value;
-  input.placeholder = CONTACT_PLACEHOLDERS[field];
-  input.maxLength = field === "initials" ? 12 : field === "phone" ? 22 : 18;
-  return input;
+const fillContactForm = (contact) => {
+  CONTACT_FIELDS.forEach((field) => {
+    if (contactInputs[field]) contactInputs[field].value = contact?.[field] || "";
+  });
+};
+
+const openContactSheet = (contact = null) => {
+  editingContactId = contact?.id || null;
+  openContactActionsId = null;
+  fillContactForm(contact);
+  if (contactSheetTitle) contactSheetTitle.textContent = contact ? "修改联系人" : "新增联系人";
+  if (contactSheet) contactSheet.hidden = false;
+  contactInputs.initials?.focus();
+  contactInputs.initials?.select();
+  renderContactList();
+};
+
+const closeContactSheet = () => {
+  editingContactId = null;
+  clearContactForm();
+  if (contactSheet) contactSheet.hidden = true;
 };
 
 const renderContactList = () => {
@@ -594,48 +608,25 @@ const renderContactList = () => {
   contacts.forEach((contact) => {
     const row = document.createElement("div");
     row.className = "contact-item";
-
-    if (editingContactId === contact.id) {
-      const editForm = document.createElement("form");
-      editForm.className = "contact-edit-form";
-      const editInputs = {
-        initials: createContactInput("initials", contact.initials),
-        phone: createContactInput("phone", contact.phone),
-        passport: createContactInput("passport", contact.passport),
-      };
-
-      const saveButton = document.createElement("button");
-      saveButton.type = "submit";
-      saveButton.textContent = "保存";
-
-      const cancelButton = document.createElement("button");
-      cancelButton.type = "button";
-      cancelButton.textContent = "取消";
-      cancelButton.addEventListener("click", () => {
-        editingContactId = null;
-        renderContactList();
-      });
-
-      editForm.append(editInputs.initials, editInputs.phone, editInputs.passport, saveButton, cancelButton);
-      editForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const nextContact = { ...contact, ...readContactFormValues(editInputs) };
-        if (!hasContactValue(nextContact)) return;
-        Object.assign(contact, nextContact);
-        editingContactId = null;
-        saveContacts();
-        renderContactList();
-      });
-
-      row.append(editForm);
-      contactListEl.append(row);
-      editInputs.initials.focus();
-      editInputs.initials.select();
-      return;
-    }
+    if (openContactActionsId === contact.id) row.classList.add("is-actions-open");
 
     const values = document.createElement("div");
     values.className = "contact-values";
+    values.addEventListener("pointerdown", (event) => {
+      values.dataset.startX = String(event.clientX);
+    });
+    values.addEventListener("pointerup", (event) => {
+      const startX = Number(values.dataset.startX);
+      if (!Number.isFinite(startX)) return;
+      const deltaX = event.clientX - startX;
+      if (deltaX < -28) {
+        openContactActionsId = contact.id;
+      } else if (deltaX > 28) {
+        openContactActionsId = null;
+      }
+      renderContactList();
+    });
+
     CONTACT_FIELDS.forEach((field) => {
       const value = document.createElement("span");
       value.textContent = contact[field] || "-";
@@ -652,8 +643,7 @@ const renderContactList = () => {
     editButton.title = "编辑";
     editButton.setAttribute("aria-label", "编辑联系人");
     editButton.addEventListener("click", () => {
-      editingContactId = contact.id;
-      renderContactList();
+      openContactSheet(contact);
     });
 
     const deleteButton = document.createElement("button");
@@ -676,13 +666,21 @@ const renderContactList = () => {
 
 contactForm?.addEventListener("submit", (event) => {
   event.preventDefault();
-  const nextContact = { id: createItemId(), ...readContactFormValues(contactInputs) };
+  const nextContact = { id: editingContactId || createItemId(), ...readContactFormValues(contactInputs) };
   if (!hasContactValue(nextContact)) return;
 
-  contacts = [...contacts, nextContact];
-  clearContactForm();
+  contacts = editingContactId
+    ? contacts.map((contact) => (contact.id === editingContactId ? nextContact : contact))
+    : [...contacts, nextContact];
+  closeContactSheet();
   saveContacts();
   renderContactList();
+});
+
+contactAddTrigger?.addEventListener("click", () => openContactSheet());
+contactSheetClose?.addEventListener("click", closeContactSheet);
+contactSheet?.addEventListener("click", (event) => {
+  if (event.target === contactSheet) closeContactSheet();
 });
 
 const normalizePackingItems = (items) =>
