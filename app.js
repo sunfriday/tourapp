@@ -307,9 +307,12 @@ const updateWeather = async () => {
 
 const registerOfflineCache = () => {
   if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
-  navigator.serviceWorker.register("./sw.js").catch(() => {
-    // Offline cache is an enhancement; the app should still run without it.
-  });
+  navigator.serviceWorker
+    .register("./sw.js")
+    .then((registration) => registration.update())
+    .catch(() => {
+      // Offline cache is an enhancement; the app should still run without it.
+    });
 };
 
 const readSavedTile = (key) => {

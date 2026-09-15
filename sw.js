@@ -1,4 +1,4 @@
-const STATIC_CACHE = "tourapp-static-v1";
+const STATIC_CACHE = "tourapp-static-v2";
 const IMAGE_CACHE = "tourapp-images-v1";
 const WEATHER_CACHE = "tourapp-weather-v1";
 const STATIC_ASSETS = [
@@ -44,7 +44,22 @@ const networkFirst = async (request, cacheName) => {
 };
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(STATIC_CACHE).then((cache) => cache.addAll(STATIC_ASSETS)));
+  event.waitUntil(
+    caches
+      .open(STATIC_CACHE)
+      .then((cache) =>
+        Promise.all(
+          STATIC_ASSETS.map((asset) =>
+            fetch(asset)
+              .then((response) => {
+                if (response.ok) return cache.put(asset, response);
+                return null;
+              })
+              .catch(() => null),
+          ),
+        ),
+      ),
+  );
   self.skipWaiting();
 });
 
@@ -74,6 +89,6 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (url.origin === self.location.origin) {
-    event.respondWith(cacheFirst(request, STATIC_CACHE));
+    event.respondWith(networkFirst(request, STATIC_CACHE));
   }
 });
