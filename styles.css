@@ -951,20 +951,23 @@ figcaption {
 }
 
 .contact-values {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(34px, 0.44fr) minmax(104px, 1.48fr) minmax(104px, 1.4fr);
+  grid-template-columns: minmax(32px, 0.4fr) minmax(116px, 1.55fr) minmax(112px, 1.42fr);
   gap: 7px;
   min-width: 0;
   min-height: 48px;
   padding: 8px;
   transition: transform 180ms ease;
-  touch-action: pan-y;
 }
 
-.contact-values span {
+.contact-values span,
+.contact-value-input {
   min-width: 0;
   overflow: hidden;
   padding: 7px 8px;
+  border: 0;
   border-radius: 8px;
   background: #ffffff;
   color: #3e5156;
@@ -973,25 +976,36 @@ figcaption {
   line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.contact-value-input {
+  width: 100%;
+  appearance: none;
+  cursor: text;
 }
 
 .contact-actions {
   position: absolute;
+  z-index: 2;
   top: 0;
   right: 0;
   bottom: 0;
   justify-content: center;
-  width: 76px;
+  width: 108px;
   padding-right: 8px;
+  pointer-events: none;
   transform: translateX(100%);
   transition: transform 180ms ease;
 }
 
 .contact-item.is-actions-open .contact-values {
-  transform: translateX(-76px);
+  transform: translateX(-108px);
 }
 
 .contact-item.is-actions-open .contact-actions {
+  pointer-events: auto;
   transform: translateX(0);
 }
 
@@ -1065,12 +1079,21 @@ figcaption {
   line-height: 1;
 }
 
+.contact-icon-button {
+  width: 38px;
+  height: 38px;
+}
+
 .packing-actions .danger,
 .todo-actions .danger,
 .contact-actions .danger {
   border-color: rgba(180, 68, 52, 0.2);
   color: #a64532;
   font-size: 18px;
+}
+
+.contact-value-input:focus {
+  outline: 2px solid rgba(44, 156, 123, 0.24);
 }
 
 .packing-edit-form,
@@ -1254,7 +1277,6 @@ figcaption {
     justify-self: start;
   }
 
-  .contact-values,
   .contact-edit-form {
     grid-template-columns: 1fr;
   }

@@ -549,6 +549,7 @@ const readContacts = () => {
 let contacts = readContacts();
 let editingContactId = null;
 let openContactActionsId = null;
+let lastContactActionAt = 0;
 
 const saveContacts = () => {
   try {
@@ -597,6 +598,25 @@ const closeContactSheet = () => {
   if (contactSheet) contactSheet.hidden = true;
 };
 
+const runContactAction = (event, action) => {
+  event.preventDefault();
+  event.stopPropagation();
+  lastContactActionAt = Date.now();
+  action();
+};
+
+const bindContactAction = (button, action) => {
+  button.addEventListener("pointerup", (event) => runContactAction(event, action));
+  button.addEventListener("click", (event) => {
+    if (Date.now() - lastContactActionAt < 350) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    runContactAction(event, action);
+  });
+};
+
 const renderContactList = () => {
   if (!contactListEl) return;
 
@@ -625,16 +645,26 @@ const renderContactList = () => {
       if (!Number.isFinite(startX)) return;
       const deltaX = event.clientX - startX;
       if (deltaX < -28) {
+        if (openContactActionsId === contact.id) return;
         openContactActionsId = contact.id;
+        renderContactList();
       } else if (deltaX > 28) {
+        if (!openContactActionsId) return;
         openContactActionsId = null;
+        renderContactList();
       }
-      renderContactList();
     });
 
     CONTACT_FIELDS.forEach((field) => {
-      const value = document.createElement("span");
-      value.textContent = contact[field] || "-";
+      const value = document.createElement("input");
+      value.className = "contact-value-input";
+      value.readOnly = true;
+      value.value = contact[field] || "";
+      value.placeholder = "-";
+      value.setAttribute("aria-label", field);
+      value.addEventListener("focus", () => {
+        if (value.value) value.select();
+      });
       values.append(value);
     });
 
@@ -647,8 +677,7 @@ const renderContactList = () => {
     editButton.textContent = "✎";
     editButton.title = "编辑";
     editButton.setAttribute("aria-label", "编辑联系人");
-    editButton.addEventListener("click", (event) => {
-      event.stopPropagation();
+    bindContactAction(editButton, () => {
       const latestContact = contacts.find((candidate) => candidate.id === contact.id);
       if (latestContact) openContactSheet(latestContact);
     });
@@ -659,8 +688,7 @@ const renderContactList = () => {
     deleteButton.textContent = "×";
     deleteButton.title = "删除";
     deleteButton.setAttribute("aria-label", "删除联系人");
-    deleteButton.addEventListener("click", (event) => {
-      event.stopPropagation();
+    bindContactAction(deleteButton, () => {
       const displayName = contact.initials || contact.phone || contact.passport || "这个联系人";
       if (!window.confirm(`确认删除 ${displayName} 吗？`)) return;
       contacts = contacts.filter((candidate) => candidate.id !== contact.id);
