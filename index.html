@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#0c4f5c" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
-    <link rel="stylesheet" href="./styles.css?v=5" />
+    <link rel="stylesheet" href="./styles.css?v=6" />
   </head>
   <body>
     <main class="phone-shell">
@@ -58,6 +58,26 @@
             <button class="contact-add-trigger icon-button small" type="button" id="contact-add-trigger" aria-label="添加联系人">+</button>
           </div>
           <div class="contact-list" id="contact-list" aria-live="polite"></div>
+        </article>
+
+        <article class="local-notes-panel dashboard-card" aria-labelledby="local-notes-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Local Notes / 当地注意事项</p>
+              <h2 id="local-notes-title">当地注意事项</h2>
+            </div>
+          </div>
+          <ol class="local-notes-list">
+            <li>肉类、香烟和电子烟不能入境；含肉零食也不要携带。口香糖受限。</li>
+            <li>地铁、公交不能吃喝或喝水，违者可能罚款。</li>
+            <li>不乱扔垃圾、不随地吐痰；如厕后记得冲水。</li>
+            <li>餐厅请由服务员安排座位，不可随意落座；通常不提供免费水和纸巾，餐后自行收盘。</li>
+            <li>商店价格大多未含税，结账时留意税费及服务费。</li>
+            <li>全年高温、室内冷气足，随身带一件外套。</li>
+            <li>当地有排队和占座文化，看到占座物品不要入座。</li>
+            <li>坐公交需示意：进站前招手；下车前按 Stop 按钮；下车也要刷卡。</li>
+            <li>车辆靠左行驶，过马路时留意来车方向。</li>
+          </ol>
         </article>
 
         <div class="contact-sheet" id="contact-sheet" hidden>
@@ -564,7 +584,7 @@
           </div>
           <form class="todo-form" id="todo-form">
             <label class="sr-only" for="todo-input">新增待办</label>
-            <input id="todo-input" type="text" placeholder="新增待办，例如：预约 iFly" maxlength="36" />
+            <input id="todo-input" type="text" placeholder="新增待办，例如：预约 iFly" maxlength="120" />
             <button class="todo-add-button" type="submit" aria-label="添加待办">+</button>
           </form>
           <div class="todo-list" id="todo-list" aria-live="polite"></div>
@@ -572,6 +592,6 @@
       </section>
 
     </main>
-    <script src="./app.js?v=5"></script>
+    <script src="./app.js?v=6"></script>
   </body>
 </html>

@@ -504,12 +504,36 @@ const setupCustomTiles = (root = document) => {
 };
 
 const PACKING_STORAGE_KEY = "tourapp.packing.items.v1";
+const PACKING_SEED_VERSION_KEY = "tourapp.packing.seed.version";
+const PACKING_SEED_VERSION = "2";
 const DEFAULT_PACKING_ITEMS = [
-  { id: "passport", text: "护照与入境资料", done: true, starred: false, updatedAt: 4 },
-  { id: "waterproof-phone-bag", text: "防水手机袋", done: true, starred: false, updatedAt: 3 },
-  { id: "uss-light-bag", text: "环球轻便包", done: false, starred: false, updatedAt: 2 },
-  { id: "aircon-jacket", text: "冷气外套", done: false, starred: false, updatedAt: 1 },
-];
+  "护照",
+  "电子入境卡",
+  "浦发 AE 卡、浦发 SF 卡、招行 M 卡",
+  "充电宝（随身）",
+  "转换插头",
+  "新加坡现金",
+  "雨伞和太阳伞",
+  "一次性雨衣（环球影城用）",
+  "水杯",
+  "卡针和电话卡",
+  "药物",
+  "充电器",
+  "运动相机及挂脖支架",
+  "自拍杆",
+  "驱蚊水",
+  "牙刷牙膏",
+  "一次性浴巾",
+  "放脏袋",
+  "充气头枕",
+  "一次性内裤",
+  "一次性袜子",
+  "防晒面罩、手套、冰袖、墨镜",
+  "防晒霜",
+  "干湿纸巾",
+  "手机防水袋",
+  "泳衣",
+].map((text, index) => ({ id: `packing-${index + 1}`, text, done: false, starred: false, updatedAt: index + 1 }));
 
 const packingListEl = document.querySelector("#packing-list");
 const packingForm = document.querySelector("#packing-form");
@@ -796,6 +820,9 @@ const sortPackingItems = (items) =>
 
 const readPackingItems = () => {
   try {
+    if (localStorage.getItem(PACKING_SEED_VERSION_KEY) !== PACKING_SEED_VERSION) {
+      return normalizePackingItems(DEFAULT_PACKING_ITEMS);
+    }
     const raw = localStorage.getItem(PACKING_STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : null;
     return normalizePackingItems(Array.isArray(parsed) ? parsed : DEFAULT_PACKING_ITEMS);
@@ -810,6 +837,7 @@ let editingPackingId = null;
 const savePackingItems = () => {
   try {
     localStorage.setItem(PACKING_STORAGE_KEY, JSON.stringify(packingItems));
+    localStorage.setItem(PACKING_SEED_VERSION_KEY, PACKING_SEED_VERSION);
   } catch {
     // Local storage may be blocked; keep the current session interactive.
   }
@@ -955,10 +983,16 @@ packingResetButton?.addEventListener("click", () => {
 });
 
 const TODO_STORAGE_KEY = "tourapp.todo.items.v1";
+const TODO_SEED_VERSION_KEY = "tourapp.todo.seed.version";
+const TODO_SEED_VERSION = "2";
 const DEFAULT_TODO_ITEMS = [
-  { id: "book-ifly", text: "预约 iFly Singapore / 新加坡风洞飞行", done: false },
-  { id: "uss-ticket", text: "确认 Universal Studios Singapore / 新加坡环球影城门票", done: false },
-  { id: "download-map", text: "下载新加坡离线地图", done: false },
+  { id: "arrival-card", text: "填写电子入境卡", done: false },
+  { id: "exchange-cash", text: "预约换现金", done: false },
+  { id: "credit-card-fee", text: "确认刷信用卡是否收手续费", done: false },
+  { id: "apple-pay", text: "安装 Apple Pay", done: false },
+  { id: "selfie-stick", text: "买自拍杆", done: false },
+  { id: "roxie-extra-bed", text: "邮件 H3610-FO16@accor.com 申请加床", done: false },
+  { id: "frasers-email", text: "邮件 tlc.sinlb.reservations@luxurycollection.com", done: false },
 ];
 
 const todoListEl = document.querySelector("#todo-list");
@@ -967,6 +1001,9 @@ const todoInput = document.querySelector("#todo-input");
 
 const readTodoItems = () => {
   try {
+    if (localStorage.getItem(TODO_SEED_VERSION_KEY) !== TODO_SEED_VERSION) {
+      return DEFAULT_TODO_ITEMS.map((item) => ({ ...item }));
+    }
     const raw = localStorage.getItem(TODO_STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : null;
     return Array.isArray(parsed) ? parsed : DEFAULT_TODO_ITEMS.map((item) => ({ ...item }));
@@ -981,6 +1018,7 @@ let editingTodoId = null;
 const saveTodoItems = () => {
   try {
     localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(todoItems));
+    localStorage.setItem(TODO_SEED_VERSION_KEY, TODO_SEED_VERSION);
   } catch {
     // Local storage may be blocked; keep the current session interactive.
   }
@@ -1023,7 +1061,7 @@ const renderTodoList = () => {
       const input = document.createElement("input");
       input.type = "text";
       input.value = item.text;
-      input.maxLength = 36;
+      input.maxLength = 120;
 
       const saveButton = document.createElement("button");
       saveButton.type = "submit";

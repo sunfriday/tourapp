@@ -924,6 +924,30 @@ figcaption {
   gap: 8px;
 }
 
+.local-notes-panel {
+  background: #f8fbfa;
+}
+
+.local-notes-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding-left: 24px;
+  color: #3e5156;
+}
+
+.local-notes-list li {
+  padding-left: 3px;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.local-notes-list li::marker {
+  color: var(--mint-strong);
+  font-weight: 900;
+}
+
 .packing-item,
 .todo-item,
 .contact-item {
