@@ -57,6 +57,16 @@ textarea {
   padding: 8px 2px 14px;
 }
 
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.currency-trigger {
+  font-size: 19px;
+  font-weight: 850;
+}
+
 .eyebrow {
   margin: 0 0 6px;
   color: var(--mint-strong);
@@ -1201,6 +1211,85 @@ figcaption {
   border-radius: 8px;
   background: #ffffff;
   box-shadow: var(--shadow);
+}
+
+.currency-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  align-items: end;
+  padding: 18px 14px;
+  background: rgba(24, 48, 54, 0.34);
+  backdrop-filter: blur(12px);
+}
+
+.currency-sheet[hidden] {
+  display: none;
+}
+
+.currency-sheet-panel {
+  width: min(100%, 430px);
+  margin: 0 auto;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.currency-rate-note {
+  margin-bottom: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--amber);
+  color: var(--amber-ink);
+  font-size: 13px;
+  font-weight: 760;
+  line-height: 1.45;
+}
+
+.currency-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr);
+  align-items: end;
+  gap: 7px;
+}
+
+.currency-fields label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--sea);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.currency-fields input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbfa;
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.currency-equals {
+  padding: 10px 0;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: 850;
+  text-align: center;
+}
+
+.currency-disclaimer {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .contact-sheet .contact-form {

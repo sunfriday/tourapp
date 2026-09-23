@@ -90,6 +90,7 @@ const WEATHER_LABELS = {
 };
 
 const WEATHER_CACHE_KEY = "tourapp.weather.hourly.v1";
+const SGD_TO_CNY_RATE = 5.2779;
 
 const getTodayDateKey = () =>
   new Intl.DateTimeFormat("en-CA", {
@@ -98,6 +99,50 @@ const getTodayDateKey = () =>
     month: "2-digit",
     day: "2-digit",
   }).format(new Date());
+
+const currencyTrigger = document.querySelector("#currency-trigger");
+const currencySheet = document.querySelector("#currency-sheet");
+const currencySheetClose = document.querySelector("#currency-sheet-close");
+const sgdInput = document.querySelector("#sgd-input");
+const cnyInput = document.querySelector("#cny-input");
+
+const formatCurrencyAmount = (amount) => {
+  if (!Number.isFinite(amount)) return "";
+  return amount.toFixed(2);
+};
+
+const updateCurrency = (source) => {
+  const input = source === "sgd" ? sgdInput : cnyInput;
+  const output = source === "sgd" ? cnyInput : sgdInput;
+  if (!input || !output) return;
+
+  if (input.value === "") {
+    output.value = "";
+    return;
+  }
+
+  const amount = Number(input.value);
+  if (!Number.isFinite(amount) || amount < 0) return;
+  output.value = formatCurrencyAmount(source === "sgd" ? amount * SGD_TO_CNY_RATE : amount / SGD_TO_CNY_RATE);
+};
+
+const openCurrencySheet = () => {
+  if (!currencySheet) return;
+  currencySheet.hidden = false;
+  window.requestAnimationFrame(() => sgdInput?.focus({ preventScroll: true }));
+};
+
+const closeCurrencySheet = () => {
+  if (currencySheet) currencySheet.hidden = true;
+};
+
+currencyTrigger?.addEventListener("click", openCurrencySheet);
+currencySheetClose?.addEventListener("click", closeCurrencySheet);
+currencySheet?.addEventListener("click", (event) => {
+  if (event.target === currencySheet) closeCurrencySheet();
+});
+sgdInput?.addEventListener("input", () => updateCurrency("sgd"));
+cnyInput?.addEventListener("input", () => updateCurrency("cny"));
 
 const getTodayTripDay = () => TRIP_DAYS.find((day) => day.date === getTodayDateKey());
 

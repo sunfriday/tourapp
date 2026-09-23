@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#0c4f5c" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
-    <link rel="stylesheet" href="./styles.css?v=6" />
+    <link rel="stylesheet" href="./styles.css?v=7" />
   </head>
   <body>
     <main class="phone-shell">
@@ -17,7 +17,10 @@
           <h1>新加坡旅行</h1>
           <p class="subtle">Singapore Trip / 新加坡 9.25-9.30</p>
         </div>
-        <button class="icon-button" aria-label="查看设置">⚙</button>
+        <div class="header-actions">
+          <button class="icon-button currency-trigger" type="button" id="currency-trigger" aria-label="货币兑换" title="货币兑换">¥</button>
+          <button class="icon-button" type="button" aria-label="查看设置">⚙</button>
+        </div>
       </header>
 
       <nav class="bottom-tabs" aria-label="主导航">
@@ -99,6 +102,31 @@
               <button class="contact-submit-button" type="submit">保存</button>
             </form>
           </div>
+        </div>
+
+        <div class="currency-sheet" id="currency-sheet" hidden>
+          <section class="currency-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="currency-sheet-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Currency / 货币兑换</p>
+                <h2 id="currency-sheet-title">新币兑换计算器</h2>
+              </div>
+              <button class="currency-sheet-close icon-button small" type="button" id="currency-sheet-close" aria-label="关闭">×</button>
+            </div>
+            <p class="currency-rate-note">固定参考：1 SGD = 5.2779 CNY（2026 年 8 月平均）</p>
+            <div class="currency-fields">
+              <label for="sgd-input">
+                <span>SGD / 新加坡币</span>
+                <input id="sgd-input" type="number" inputmode="decimal" min="0" step="0.01" value="1" />
+              </label>
+              <span class="currency-equals" aria-hidden="true">=</span>
+              <label for="cny-input">
+                <span>CNY / 人民币</span>
+                <input id="cny-input" type="number" inputmode="decimal" min="0" step="0.01" value="5.28" />
+              </label>
+            </div>
+            <p class="currency-disclaimer">实际兑换金额以银行、支付平台或换汇机构报价为准。</p>
+          </section>
         </div>
 
         <section class="home-itinerary-card">
@@ -592,6 +620,6 @@
       </section>
 
     </main>
-    <script src="./app.js?v=6"></script>
+    <script src="./app.js?v=7"></script>
   </body>
 </html>

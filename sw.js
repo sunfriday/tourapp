@@ -1,4 +1,4 @@
-const STATIC_CACHE = "tourapp-static-v4";
+const STATIC_CACHE = "tourapp-static-v5";
 const IMAGE_CACHE = "tourapp-images-v1";
 const WEATHER_CACHE = "tourapp-weather-v1";
 const STATIC_ASSETS = [
